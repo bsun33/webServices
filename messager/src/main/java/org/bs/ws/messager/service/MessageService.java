@@ -1,6 +1,7 @@
 package org.bs.ws.messager.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,27 @@ public class MessageService {
 	
 	public MessageService() {
 		messages.put(1L, new Message(1, "hello tsuyo", "tsuyo"));
-		messages.put(2L, new Message(2, "hello tsuyo", "koichi"));
+		messages.put(2L, new Message(2, "hello koichi", "koichi"));
 	}
 	public List<Message> getAllMessages(){
 		return new ArrayList<Message>(messages.values());
+	}
+	//just for testing
+	public List<Message> getAllMessagesForYear(int year){
+		List<Message> messagesForYear = new ArrayList<>();
+		Calendar cal = Calendar.getInstance();
+		for(Message message : messages.values()) {
+			cal.setTime(message.getCreated());
+			if(cal.get(Calendar.YEAR) == year) {
+				messagesForYear.add(message);
+			}
+		}
+		return messagesForYear;
+	}
+	
+	public List<Message> getAllMessagesPaginated(int start, int size){
+		ArrayList<Message> list = new ArrayList(messages.values());
+		return list.subList(start, start + size);
 	}
 	
 	public Message getMessage(Long id) {
